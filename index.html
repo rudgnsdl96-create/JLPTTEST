@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- ============================================================
-     APP VERSION: 2026-09-21-v1
+     APP VERSION: 2026-09-21-v4
      ⚠ 수정할 때마다 이 값과 sw.js 의 CACHE 값을 함께 올릴 것.
      (둘을 같은 문자열로 유지하면 관리가 쉽다)
      ============================================================ -->
@@ -144,6 +144,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .listrow .wq{flex:1;font-family:var(--font-serif);font-size:14px;min-width:0}
 .listrow .wt{color:var(--muted);font-size:12px;flex:none}
 .clear{color:var(--no);font-size:13px;font-weight:600;text-align:center;padding:14px;width:100%}
+.seg{display:flex;gap:6px;margin:8px 0 12px}
+.seg button{flex:1;padding:9px 0;border:1px solid var(--line);background:var(--surface);border-radius:11px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.qstat{font-size:12px;color:var(--muted);margin:-4px 0 12px;display:flex;align-items:center;gap:6px}
+.qstat .dot{width:5px;height:5px;border-radius:50%;background:var(--muted);opacity:.5}
 .empty{color:var(--muted);text-align:center;padding:40px 10px;font-size:14px;line-height:1.7}
 </style>
 </head>
@@ -203,6 +208,97 @@ const BANK={
        stem:"あしたは {火}よう日です。",choices:["どようび","すいようび","かようび","にちようび"],answer:2,
        ko:"내일은 화요일입니다.",
        exp:"요일 한자: 火=<em>か</em>(화), 水=すい, 土=ど, 日=にち. 「火よう日」=かようび."},
+      {block:"もんだい1",type:"漢字読み",typeKo:"한자 읽기",
+       instr:"___의 말은 히라가나로 어떻게 씁니까?",
+       stem:"きょうは {天気}が いいです。",choices:["てんき","でんき","てんぎ","でんぎ"],answer:0,
+       ko:"오늘은 날씨가 좋습니다.",
+       exp:"「天気」=<em>てんき</em>(날씨). 天=てん, 気=き. 「電気 でんき」(전기)와 혼동 주의. 「が いい」=좋다."},
+      {block:"もんだい1",type:"漢字読み",typeKo:"한자 읽기",
+       instr:"___의 말은 히라가나로 어떻게 씁니까?",
+       stem:"わたしは {毎日} にほんごを べんきょうします。",choices:["まいにち","まいつき","まいしゅう","まいあさ"],answer:0,
+       ko:"나는 매일 일본어를 공부합니다.",
+       exp:"「毎日」=<em>まいにち</em>(매일). 毎=まい. 毎月 まいつき(매달)·毎週 まいしゅう(매주)·毎朝 まいあさ(매일 아침)와 구별."},
+      {block:"もんだい1",type:"漢字読み",typeKo:"한자 읽기",
+       instr:"___의 말은 히라가나로 어떻게 씁니까?",
+       stem:"{先生}は きょうしつに います。",choices:["せんせい","せいせい","せんせん","せいせん"],answer:0,
+       ko:"선생님은 교실에 있습니다.",
+       exp:"「先生」=<em>せんせい</em>(선생님). 先=せん, 生=せい. 장음·순서 혼동을 노린 오답. 사람이므로 「います」."},
+
+      {block:"もんだい2",type:"表記",typeKo:"표기",
+       instr:"___의 말은 어떻게 씁니까?",
+       stem:"わたしの くには {かわ}が おおいです。",choices:["花","山","川","木"],answer:2,
+       ko:"우리 나라는 강이 많습니다.",
+       exp:"「かわ」=<em>川</em>(강). 花=はな(꽃)·山=やま(산)·木=き(나무). 뜻으로 구별하는 문제."},
+      {block:"もんだい2",type:"表記",typeKo:"표기",
+       instr:"___의 말은 어떻게 씁니까?",
+       stem:"この カメラは {たかい}ですね。",choices:["高い","安い","古い","多い"],answer:0,
+       ko:"이 카메라는 비싸네요.",
+       exp:"「たかい」=<em>高い</em>(비싸다·높다). 安い やすい(싸다)·古い ふるい(오래되다)·多い おおい(많다)는 읽기가 달라 오답."},
+      {block:"もんだい2",type:"表記",typeKo:"표기",
+       instr:"___의 말은 어떻게 씁니까?",
+       stem:"あしたは がっこうが {やすみ}です。",choices:["休み","体み","本み","木み"],answer:0,
+       ko:"내일은 학교가 쉬는 날입니다.",
+       exp:"「やすみ」=<em>休み</em>(휴일·쉼). 休(쉴 휴)와 体(몸 체)는 모양이 닮아 자주 혼동. 亻(사람)+木 = 休."},
+      {block:"もんだい2",type:"表記",typeKo:"표기",
+       instr:"___의 말은 어떻게 씁니까?",
+       stem:"この {ほん}を よみました。",choices:["本","木","休","体"],answer:0,
+       ko:"이 책을 읽었습니다.",
+       exp:"「ほん」=<em>本</em>(책). 木(き)에 한 획을 더한 글자. 닮은꼴 木·休·体와 구별."},
+      {block:"もんだい2",type:"表記",typeKo:"표기",
+       instr:"___의 말은 어떻게 씁니까?",
+       stem:"コップに {みず}を いれます。",choices:["水","木","氷","永"],answer:0,
+       ko:"컵에 물을 넣습니다.",
+       exp:"「みず」=<em>水</em>(물). 氷=こおり(얼음)·永=えい(길 영)와 모양이 비슷하니 주의."},
+
+      {block:"もんだい3",type:"文脈規定",typeKo:"문맥 규정",
+       instr:"( )에 무엇이 들어갑니까?",
+       stem:"その ナイフで りんごを（ ）ください。",choices:["おきて","つけて","しめて","きって"],answer:3,
+       ko:"그 칼로 사과를 잘라 주세요.",
+       exp:"문맥상 '자르다' <em>切る</em>의 て형 きって. 置く(두다)·付ける(붙이다)·閉める(닫다)는 부적합. 「~て ください」=요청."},
+      {block:"もんだい3",type:"文脈規定",typeKo:"문맥 규정",
+       instr:"( )에 무엇이 들어갑니까?",
+       stem:"なつやすみは まいにち（ ）で およぎました。",choices:["レストラン","プール","エレベーター","ビル"],answer:1,
+       ko:"여름방학에는 매일 수영장에서 헤엄쳤습니다.",
+       exp:"'헤엄치다(およぐ)'와 어울리는 장소는 <em>プール</em>(수영장). 장소의 조사 「で」."},
+      {block:"もんだい3",type:"文脈規定",typeKo:"문맥 규정",
+       instr:"( )에 무엇이 들어갑니까?",
+       stem:"さむいですから、まどを（ ）ください。",choices:["あけて","しめて","つけて","けして"],answer:1,
+       ko:"추우니까 창문을 닫아 주세요.",
+       exp:"'춥다'와 이어지므로 '닫다' <em>閉める</em>의 て형 しめて. 反 開ける(열다). つける(켜다)·消す(끄다)는 부적합."},
+      {block:"もんだい3",type:"文脈規定",typeKo:"문맥 규정",
+       instr:"( )에 무엇이 들어갑니까?",
+       stem:"のどが かわきましたから、みずを（ ）。",choices:["のみます","たべます","ききます","みます"],answer:0,
+       ko:"목이 마르니까 물을 마십니다.",
+       exp:"물에는 <em>飲む</em>(마시다). 食べる(먹다)·聞く(듣다)·見る(보다)는 대상이 안 맞음."},
+      {block:"もんだい3",type:"文脈規定",typeKo:"문맥 규정",
+       instr:"( )에 무엇이 들어갑니까?",
+       stem:"きょうは あついですから、（ ）を つけましょう。",choices:["エアコン","でんわ","ドア","かさ"],answer:0,
+       ko:"오늘은 더우니까 에어컨을 켭시다.",
+       exp:"'덥다'+'켜다(つける)'와 어울리는 것은 <em>エアコン</em>(에어컨). 電話(전화)·ドア(문)·かさ(우산)는 부적합."},
+      {block:"もんだい3",type:"文脈規定",typeKo:"문맥 규정",
+       instr:"( )에 무엇이 들어갑니까?",
+       stem:"つかれましたから、すこし（ ）ましょう。",choices:["やすみ","あそび","はたらき","べんきょうし"],answer:0,
+       ko:"피곤하니까 조금 쉽시다.",
+       exp:"'피곤하다'와 이어지는 것은 '쉬다' <em>休む</em>. ます형 어간+ましょう='~합시다'. 遊ぶ(놀다)·働く(일하다)·勉強する(공부하다)는 부적합."},
+
+      {block:"もんだい4",type:"言い換え類義",typeKo:"유의 표현",
+       instr:"___의 문장과 대체로 같은 뜻의 문장을 고르세요.",
+       stem:"この ダンスは {やさしい}です。",
+       choices:["この ダンスは かんたんです。","この ダンスは たいへんです。","この ダンスは たのしいです。","この ダンスは つまらないです。"],answer:0,
+       ko:"이 춤은 쉽습니다.",
+       exp:"「やさしい」(쉽다)의 유의어는 <em>かんたん</em>(간단). たいへん(힘듦)·たのしい(즐겁다)·つまらない(재미없다)는 뜻이 다름."},
+      {block:"もんだい4",type:"言い換え類義",typeKo:"유의 표현",
+       instr:"___의 문장과 대체로 같은 뜻의 문장을 고르세요.",
+       stem:"この へやは {くらい}です。",
+       choices:["この へやは あかるいです。","この へやは あかるくないです。","この へやは しずかです。","この へやは ひろいです。"],answer:1,
+       ko:"이 방은 어둡습니다.",
+       exp:"「くらい」(어둡다)는 「あかるい」(밝다)의 반대 → <em>あかるくない</em>(밝지 않다)와 같은 뜻. 형용사 부정: あかるい→あかるくない."},
+      {block:"もんだい4",type:"言い換え類義",typeKo:"유의 표현",
+       instr:"___의 문장과 대체로 같은 뜻의 문장을 고르세요.",
+       stem:"リーさんは もりさんに ペンを {かしました}。",
+       choices:["リーさんは もりさんに ペンを もらいました。","もりさんは リーさんに ペンを もらいました。","リーさんは もりさんに ペンを かりました。","もりさんは リーさんに ペンを かりました。"],answer:3,
+       ko:"리 씨는 모리 씨에게 펜을 빌려주었습니다.",
+       exp:"「かす」(빌려주다)를 받는 사람 쪽에서 보면 「かりる」(빌리다). 리→모리로 빌려줬으니 '모리가 리에게서 빌렸다' = <em>もりさんは リーさんに ペンを かりました</em>. 「もらう」(받다)와 혼동 주의."},
     ],
     grammar:[
       {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
@@ -220,6 +316,131 @@ const BANK={
        stem:"せんしゅう デパートで かばん（ ）くつなどを かいました。",choices:["は","も","へ","や"],answer:3,
        ko:"지난주 백화점에서 가방이랑 신발 등을 샀습니다.",
        exp:"열거의 조사 <em>や</em>. 「AやB」='A랑 B(그 외에도)'. 뒤의 「〜など」(등)와 호응. 전부 나열하는 「と」와 달리 대표 예만 드는 뉘앙스."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"まいあさ みち（ ）あるいて がっこうへ 行きます。",choices:["を","に","で","へ"],answer:0,
+       ko:"매일 아침 길을 걸어 학교에 갑니다.",
+       exp:"이동·통과하는 장소는 <em>を</em>. 「道を歩く／公園を散歩する」. 장소에서의 동작 「で」와 구별."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"わたしは あさ 7じ（ ）おきます。",choices:["に","で","を","へ"],answer:0,
+       ko:"나는 아침 7시에 일어납니다.",
+       exp:"시각(때)을 나타낼 때는 <em>に</em>. 「7時に起きる」. 시간의 に."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"あした あね（ ）としょかんへ 行きます。",choices:["と","に","を","や"],answer:0,
+       ko:"내일 언니와 도서관에 갑니다.",
+       exp:"함께 하는 상대는 <em>と</em>(~와 함께). 「姉と行く」."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"きのうは なに（ ）たべませんでした。",choices:["も","を","は","が"],answer:0,
+       ko:"어제는 아무것도 먹지 않았습니다.",
+       exp:"의문사+<em>も</em>+부정=전면 부정. 「なにも食べない」(아무것도 안 먹다), 「どこへも行かない」."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"ともだち（ ）てがみを かきます。",choices:["に","で","を","へ"],answer:0,
+       ko:"친구에게 편지를 씁니다.",
+       exp:"동작이 향하는 상대(수신)는 <em>に</em>. 「友だちに書く／電話する」."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"うち（ ）えきまで あるきます。",choices:["から","まで","に","で"],answer:0,
+       ko:"집에서 역까지 걷습니다.",
+       exp:"시작점은 <em>から</em>, 도착점은 まで. 「AからBまで」(A에서 B까지)."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"これは にほんご（ ）なんと いいますか。",choices:["で","に","を","と"],answer:0,
+       ko:"이것은 일본어로 뭐라고 합니까?",
+       exp:"수단·언어의 <em>で</em>. 「日本語で話す／ペンで書く」. 도구·언어·방법을 나타냄."},
+      {block:"もんだい1",type:"文法形式（助詞）",typeKo:"문법형식·조사",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"でんしゃは バス（ ）はやいです。",choices:["より","から","まで","しか"],answer:0,
+       ko:"전철은 버스보다 빠릅니다.",
+       exp:"비교의 기준은 <em>より</em>(~보다). 「AはBより～」. 흔히 「BよりAのほうが～」로도 씀."},
+
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"からだに わるいですから、たばこは すわない（ ）が いいですよ。",choices:["ほう","こと","もの","とき"],answer:0,
+       ko:"몸에 나쁘니까 담배는 안 피우는 게 좋아요.",
+       exp:"<em>～ないほうがいい</em>=~안 하는 게 좋다(조언). 긍정은 「～たほうがいい」."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"まいばん ねる（ ）に、はを みがきます。",choices:["まえ","あと","とき","うち"],answer:0,
+       ko:"매일 밤 자기 전에 이를 닦습니다.",
+       exp:"동사 사전형+<em>まえに</em>=~하기 전에. 반대는 「～たあとで」(~한 후에)."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"ごはんを たべた（ ）で、くすりを のみます。",choices:["あと","まえ","とき","うち"],answer:0,
+       ko:"밥을 먹은 후에 약을 먹습니다.",
+       exp:"동사 た형+<em>あとで</em>=~한 후에. 앞은 반드시 た형(たべた)."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"にほんへ 行った（ ）が ありますか。",choices:["こと","もの","ほう","ところ"],answer:0,
+       ko:"일본에 간 적이 있습니까?",
+       exp:"동사 た형+<em>ことがある</em>=~한 적이 있다(경험). 부정 「～たことがない」."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"へやを きれい（ ）して ください。",choices:["に","く","で","と"],answer:0,
+       ko:"방을 깨끗하게 해 주세요.",
+       exp:"な형용사+<em>に</em>+する=~하게 하다(변화). 「きれいにする」. い형용사면 ～くする."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"この みずは つめた（ ）て おいしいです。",choices:["くて","いで","だで","にて"],answer:0,
+       ko:"이 물은 차갑고 맛있습니다.",
+       exp:"い형용사 연결형 <em>～くて</em>(어간+くて). つめたい→つめたくて. な형용사·명사는 ～で."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"もう ひるごはんを たべ（ ）か。",choices:["ました","ません","ないで","ましょう"],answer:0,
+       ko:"벌써 점심을 먹었습니까?",
+       exp:"<em>もう＋과거</em>=이미 ~했다. 대답이 아직이면 「まだ 食べていません」."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"ここで しゃしんを とっては（ ）。",choices:["いけません","ください","いいです","ましょう"],answer:0,
+       ko:"여기서 사진을 찍으면 안 됩니다.",
+       exp:"<em>～てはいけない</em>=금지. 허가는 「～てもいい」."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"テレビを 見（ ）、ごはんを たべます。",choices:["ながら","たり","てから","ので"],answer:0,
+       ko:"TV를 보면서 밥을 먹습니다.",
+       exp:"동사 ます어간+<em>ながら</em>=~하면서(동시 동작). 見ます→見ながら."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"おもい にもつですね。もち（ ）か。",choices:["ましょう","ました","ません","ています"],answer:0,
+       ko:"무거운 짐이네요. 들어 드릴까요?",
+       exp:"<em>～ましょうか</em>=제안·도움 제의(~할까요?). 상대를 위한 행동에 자주 씀."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"この えいがは あまり おもしろく（ ）。",choices:["ありません","あります","です","でした"],answer:0,
+       ko:"이 영화는 별로 재미있지 않습니다.",
+       exp:"<em>あまり～ない</em>(부정과 호응)=별로 ~않다. い형용사 부정 おもしろくない＝おもしろくありません."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"なつやすみに くにへ かえる（ ）です。",choices:["つもり","こと","ところ","もの"],answer:0,
+       ko:"여름방학에 고향에 돌아갈 생각입니다.",
+       exp:"동사 사전형+<em>つもりだ</em>=~할 작정·생각(계획·의지)."},
+      {block:"もんだい1",type:"文法形式の判断",typeKo:"문법형식",
+       instr:"( )에 무엇을 넣습니까?",
+       stem:"どうして おくれましたか。—でんしゃが とまった（ ）です。",choices:["ん","こと","もの","わけ"],answer:0,
+       ko:"왜 늦었어요? — 전철이 멈췄거든요.",
+       exp:"<em>～んです</em>=이유·사정 설명. 보통형+んです(とまった→とまったんです)."},
+
+      {block:"もんだい3",type:"文章の文法",typeKo:"글의 문법",
+       instr:"글을 읽고 （41）에 들어갈 것을 고르세요.",
+       passage:"わたしは がくせいです。まいにち がっこう（41）行きます。がっこうまで じてんしゃ（42）行きます。べんきょうは たいへんです（43）、とても たのしいです。",
+       stem:"（41）に 何が 入りますか。",choices:["へ","を","で","の"],answer:0,
+       ko:"나는 학생입니다. 매일 학교에 갑니다. 학교까지 자전거로 갑니다. 공부는 힘들지만 매우 즐겁습니다.",
+       exp:"이동의 도착점(목적지)은 <em>へ</em>(또는 に). 「学校へ行く」. を는 통과 장소라 부적합."},
+      {block:"もんだい3",type:"文章の文法",typeKo:"글의 문법",
+       instr:"글을 읽고 （42）에 들어갈 것을 고르세요.",
+       passage:"わたしは がくせいです。まいにち がっこう（41）行きます。がっこうまで じてんしゃ（42）行きます。べんきょうは たいへんです（43）、とても たのしいです。",
+       stem:"（42）に 何が 入りますか。",choices:["で","に","を","へ"],answer:0,
+       ko:"나는 학생입니다. 매일 학교에 갑니다. 학교까지 자전거로 갑니다. 공부는 힘들지만 매우 즐겁습니다.",
+       exp:"수단·도구의 <em>で</em>. 「自転車で行く」(자전거로 가다)."},
+      {block:"もんだい3",type:"文章の文法",typeKo:"글의 문법",
+       instr:"글을 읽고 （43）에 들어갈 것을 고르세요.",
+       passage:"わたしは がくせいです。まいにち がっこう（41）行きます。がっこうまで じてんしゃ（42）行きます。べんきょうは たいへんです（43）、とても たのしいです。",
+       stem:"（43）に 何が 入りますか。",choices:["が","から","ので","と"],answer:0,
+       ko:"나는 학생입니다. 매일 학교에 갑니다. 학교까지 자전거로 갑니다. 공부는 힘들지만 매우 즐겁습니다.",
+       exp:"앞뒤가 반대 내용(힘들다↔즐겁다)이므로 역접의 <em>が</em>(~지만). から·ので는 이유라 부적합."},
     ],
     reading:[
       {block:"もんだい4",type:"内容理解（短文）",typeKo:"내용이해·단문",
@@ -229,6 +450,27 @@ const BANK={
        choices:["さんぽします","しんぶんを よみます","6じに おきます","がっこうへ いきます"],answer:1,
        ko:"지문: 나는 매일 아침 6시에 일어납니다. 그리고 공원을 산책합니다. 아침 식사 후에 신문을 읽습니다. / 문제: 이 사람은 아침 식사 후에 무엇을 합니까?",
        exp:"「あさごはんの あとで」='아침 식사 후에'. 마지막 문장 「しんぶんを よみます」와 대응. <em>あとで</em>(후에) ↔ <em>まえに</em>(전에)를 구분하는 문제."},
+      {block:"もんだい4",type:"内容理解（短文）",typeKo:"내용이해·단문",
+       instr:"다음 글을 읽고 질문에 답하세요.",
+       passage:"きょうは ともだちの たんじょうびです。よる、レストランで いっしょに ばんごはんを たべます。プレゼントは かばんを かいました。",
+       stem:"プレゼントは 何ですか。",
+       choices:["かばん","レストラン","ばんごはん","ケーキ"],answer:0,
+       ko:"지문: 오늘은 친구의 생일입니다. 밤에 레스토랑에서 함께 저녁을 먹습니다. 선물은 가방을 샀습니다. / 문제: 선물은 무엇입니까?",
+       exp:"마지막 문장 「プレゼントは かばんを かいました」와 대응 → <em>かばん</em>. レストラン·ばんごはん은 장소·식사이지 선물이 아님."},
+      {block:"もんだい4",type:"内容理解（短文）",typeKo:"내용이해·단문",
+       instr:"다음 메모를 읽고 질문에 답하세요.",
+       passage:"やまださんへ\nあした ごぜん 10じに えきで あいましょう。きっぷは わたしが かいますから、だいじょうぶです。\n　　たなか",
+       stem:"たなかさんは あした 何を しますか。",
+       choices:["きっぷを かう","えきを そうじする","やまださんに でんわする","ばんごはんを つくる"],answer:0,
+       ko:"지문: 야마다 씨에게 — 내일 오전 10시에 역에서 만납시다. 표는 제가 살 테니 괜찮습니다. 다나카. / 문제: 다나카 씨는 내일 무엇을 합니까?",
+       exp:"「きっぷは わたしが かいます」='표는 제(다나카)가 삽니다' → <em>きっぷを かう</em>. 「わたし」가 글쓴이(たなか)임을 파악하는 문제."},
+      {block:"もんだい6",type:"情報検索",typeKo:"정보 검색",
+       instr:"안내문을 보고 질문에 답하세요.",
+       passage:"＜としょかん りようあんない＞\n・あいて いる じかん：ごぜん9じ〜ごご5じ\n・やすみ：まいしゅう げつようび\n・本は 2しゅうかん かりられます。",
+       stem:"としょかんは いつ やすみですか。",
+       choices:["げつようび","どようび","にちようび","きんようび"],answer:0,
+       ko:"지문: 〈도서관 이용 안내〉 개관 시간: 오전 9시~오후 5시 / 휴관: 매주 월요일 / 책은 2주간 빌릴 수 있습니다. / 문제: 도서관은 언제 쉽니까?",
+       exp:"「やすみ：まいしゅう げつようび」='휴관: 매주 월요일' → <em>げつようび</em>. 안내문에서 해당 항목만 찾아 대조하는 정보검색 유형."},
     ],
   },
   N4:{vocab:[],grammar:[],reading:[]},
@@ -244,6 +486,21 @@ const sig=(lvl,q)=>lvl+"|"+q.block+"|"+q.stem;
 function saveProgress(s){const p=LS.get("progress",{});p[s.key]={...s,ts:Date.now()};LS.set("progress",p);}
 function clearProgress(key){const p=LS.get("progress",{});delete p[key];LS.set("progress",p);}
 function progAnswered(s){return s.answers.filter(a=>a!==null).length;}
+
+/* ---------------- 풀이 통계 (문제별 풀이 횟수) ---------------- */
+const SESSION_DEFAULT=10;   // 한 세션 기본 문항 수 (10 / 20 / 전체)
+function statOf(sg){return LS.get("stats",{})[sg]||{seen:0,correct:0};}
+function bumpStat(sg,ok){const s=LS.get("stats",{});const e=s[sg]||{seen:0,correct:0};e.seen++;if(ok)e.correct++;e.ts=Date.now();s[sg]=e;LS.set("stats",s);}
+/* 랜덤 추출 + 안 푼(적게 푼) 문제 우선. 선택된 세트는 다시 섞어 순서도 랜덤. */
+function drawSession(pool,size){
+  const stats=LS.get("stats",{});
+  const arr=pool.map(q=>({q,seen:(stats[q._sig]?.seen||0),r:Math.random()}));
+  arr.sort((a,b)=>a.seen-b.seen||a.r-b.r);        // 적게 푼 것 먼저
+  const take=(size==="all")?arr.length:Math.min(size,arr.length);
+  const out=arr.slice(0,take).map(x=>x.q);
+  for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}
+  return out;
+}
 
 /* ---------------- 공통 UI ---------------- */
 const view=document.getElementById("view"),ttl=document.getElementById("ttl"),
@@ -314,46 +571,64 @@ function home(){
 
 /* ---------------- 영역 선택 ---------------- */
 function sectionList(level){
-  setTop(level+" 영역 선택");
-  const rows=Object.entries(SECTIONS).map(([k,s])=>{
-    const n=BANK[level][k]?.length||0;
-    return `<div class="secrow ${n?"":"dim"}" data-s="${k}">
-      <div class="ic serif">${s.ic}</div>
-      <div class="t"><b>${s.ko}</b><span class="serif">${s.jp}</span></div>
-      <div class="n">${n?n+"문항":"준비 중"} ›</div></div>`;
-  }).join("");
-  const total=Object.keys(SECTIONS).reduce((a,k)=>a+(BANK[level][k]?.length||0),0);
-  view.innerHTML=`<div class="card" style="padding:6px 16px">${rows}</div>
-    <button class="btn" id="all" style="margin-top:4px">전체 응시 (${total}문항)</button>`;
-  view.querySelectorAll(".secrow").forEach(el=>{const k=el.dataset.s;if(BANK[level][k]?.length)el.onclick=()=>go(()=>beginExam(level,[k]));});
-  document.getElementById("all").onclick=()=>total&&go(()=>beginExam(level,Object.keys(SECTIONS)));
+  let size=SESSION_DEFAULT;
+  function draw(){
+    setTop(level+" 영역 선택");
+    const stats=LS.get("stats",{});
+    const rows=Object.entries(SECTIONS).map(([k,s])=>{
+      const pool=BANK[level][k]||[],n=pool.length;
+      const unseen=pool.filter(q=>!(stats[sig(level,q)]?.seen)).length;
+      return `<div class="secrow ${n?"":"dim"}" data-s="${k}">
+        <div class="ic serif">${s.ic}</div>
+        <div class="t"><b>${s.ko}</b><span class="serif">${s.jp} · ${n?`${n}문항 (안 푼 것 ${unseen})`:"준비 중"}</span></div>
+        <div class="n">${n?"시작 ›":""}</div></div>`;
+    }).join("");
+    const total=Object.keys(SECTIONS).reduce((a,k)=>a+(BANK[level][k]?.length||0),0);
+    view.innerHTML=`
+      <div class="seg" id="seg">
+        <button data-sz="10" class="${size===10?"on":""}">10문항</button>
+        <button data-sz="20" class="${size===20?"on":""}">20문항</button>
+        <button data-sz="all" class="${size==="all"?"on":""}">전체</button>
+      </div>
+      <p class="instr" style="margin:-4px 0 10px">랜덤 출제 · 아직 안 푼 문제부터 나옵니다.</p>
+      <div class="card" style="padding:6px 16px">${rows}</div>
+      <button class="btn" id="all" ${total?"":"disabled"}>전체 영역에서 출제 (${total}문항 중)</button>`;
+    view.querySelectorAll("#seg button").forEach(b=>b.onclick=()=>{size=b.dataset.sz==="all"?"all":+b.dataset.sz;draw();});
+    view.querySelectorAll(".secrow").forEach(el=>{const k=el.dataset.s;if(BANK[level][k]?.length)el.onclick=()=>go(()=>beginExam(level,[k],size));});
+    document.getElementById("all").onclick=()=>total&&go(()=>beginExam(level,Object.keys(SECTIONS),size));
+  }
+  draw();
 }
 
 /* ---------------- 세션 생성 ---------------- */
 function keyOf(level,keys){return keys.length>1?level+":ALL":level+":"+keys[0];}
-function beginExam(level,keys){
+function beginExam(level,keys,size){
   const key=keyOf(level,keys);
   const saved=LS.get("progress",{})[key];
-  if(saved&&progAnswered(saved)<saved.qs.length)return run(saved);
-  const qs=keys.flatMap(k=>(BANK[level][k]||[]).map(q=>({...q,sec:k,level,_sig:sig(level,q)})));
-  run({level,label:keys.length>1?"전체":SECTIONS[keys[0]].ko,mode:"exam",keys,key,qs,i:0,answers:Array(qs.length).fill(null)});
+  if(saved&&progAnswered(saved)<saved.qs.length)return run(saved);   // 미완료 세션은 이어풀기
+  const pool=keys.flatMap(k=>(BANK[level][k]||[]).map(q=>({...q,sec:k,level,_sig:sig(level,q)})));
+  const qs=drawSession(pool,size||SESSION_DEFAULT);
+  if(!qs.length)return;
+  run({level,label:keys.length>1?"전체":SECTIONS[keys[0]].ko,mode:"exam",keys,key,qs,i:0,answers:Array(qs.length).fill(null),counted:{}});
 }
 function beginWrong(){
   const wrong=LS.get("wrong",[]);
   if(!wrong.length){reset();return;}
   const key="wrong",saved=LS.get("progress",{})[key];
   if(saved&&progAnswered(saved)<saved.qs.length)return run(saved);
-  const qs=wrong.map(w=>({...w.q}));
-  run({level:"오답",label:"오답 노트",mode:"wrong",keys:[],key,qs,i:0,answers:Array(qs.length).fill(null)});
+  const qs=drawSession(wrong.map(w=>({...w.q})),"all");   // 오답은 전부, 순서만 랜덤
+  run({level:"오답",label:"오답 노트",mode:"wrong",keys:[],key,qs,i:0,answers:Array(qs.length).fill(null),counted:{}});
 }
 
 /* ---------------- 시험 진행 ---------------- */
 function run(session){
   const qs=session.qs;
+  session.counted=session.counted||{};
   function render(){
     const q=qs[session.i],picked=session.answers[session.i],done=picked!==null;
     setTop(`${session.level} · ${session.label}`,`${session.i+1}/${qs.length}`);
     const stemHtml=esc(q.stem).replace(/\{([^}]*)\}/g,'<u>$1</u>').replace(/___|（ ）|\( \)/g,'<span class="blank"> </span>');
+    const st=statOf(q._sig);
     const choices=q.choices.map((c,idx)=>{
       let cls="choice";
       if(done){if(idx===q.answer)cls+=" correct";else if(idx===picked)cls+=" wrong";}
@@ -364,12 +639,18 @@ function run(session){
     view.innerHTML=`
       <div class="prog"><i style="width:${session.i/qs.length*100}%"></i></div>
       <div class="qmeta"><span class="tag blk serif">${esc(q.block)}</span><span class="tag">${esc(q.typeKo)}</span></div>
+      <div class="qstat">${st.seen?`지금까지 ${st.seen}번 풀이`:"처음 푸는 문제"}${st.seen?`<span class="dot"></span>정답 ${st.correct}회`:""}</div>
       ${q.instr?`<p class="instr">${esc(q.instr)}</p>`:""}
       ${q.passage?`<div class="passage">${esc(q.passage)}</div>`:""}
       <p class="stem">${stemHtml}</p>
       <div class="choices">${choices}</div>
       <div id="explain"></div>`;
-    view.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{session.answers[session.i]=+b.dataset.i;saveProgress(session);render();});
+    view.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{
+      const idx=+b.dataset.i;
+      session.answers[session.i]=idx;
+      if(!session.counted[q._sig]){bumpStat(q._sig,idx===q.answer);session.counted[q._sig]=true;} // 풀이 1회 기록
+      saveProgress(session);render();
+    });
     if(done)showExplain(q,picked);
   }
   function showExplain(q,picked){
