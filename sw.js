@@ -1,6 +1,6 @@
 /* JLPT 모의시험 service worker — offline app shell */
 /* ⚠ 앱 수정 시마다 아래 CACHE 값을 올릴 것. index.html 의 APP VERSION 과 동일하게 유지. */
-const CACHE = "jlpt-2026-09-21-v4";
+const CACHE = "jlpt-2026-09-21-v10";
 const SHELL = [
   "./",
   "./index.html",
